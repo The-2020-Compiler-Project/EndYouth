@@ -1,62 +1,57 @@
-#ifndef PARSE_H_INCLUDED
-#define PARSE_H_INCLUDED
+
 #include "byylf_cf.h"
 
 typedef enum
 {
-	stmtk,	//Óï¾ä
-	expk	//±í´ïÊ½
-} Nodekind; ///½áµãÀàĞÍ
+    stmtk,  //è¯­å¥
+    expk    //è¡¨è¾¾å¼
+} Nodekind; ///ç»“ç‚¹ç±»å‹
 
 typedef enum
 {
-	ifk,
-	fork,
-	whilek,
-	returnk,
-	assignk,
-	funck,
-	defineparak,
-	maink,
-	define_arrayk,
-	structk,
-	switchk,
-	casek,
-	breakk,
-	defaultk
-} Stmtkind; ///¾ä×ÓÀàĞÍ
+    ifk,
+    fork,
+    whilek,
+    returnk,
+    assignk,
+    funck,
+    defineparak,
+    maink,
+    define_arrayk,
+    structk,
+    switchk,
+    casek,
+    breakk,
+    defaultk,
+    printk
+} Stmtkind; ///å¥å­ç±»å‹
 
 typedef enum
 {
-	opk,
-	constk,
-	idk,
-	cite_arrayk
-} Expkind; ///±í´ïÊ½ÀàĞÍ
+    opk,
+    constk,
+    idk,
+    cite_arrayk
+} Expkind; ///è¡¨è¾¾å¼ç±»å‹
 
 typedef struct treenode
 {
-	struct treenode *child[4]; //Ò²¾ÍforÄÜÓĞËÄ¸ö¶ù×Ó
-	struct treenode *sibling;
-	int lineno;
-	Nodekind nodekind; //½ÚµãÀàĞÍ£ºÓï¾ä/±í´ïÊ½
-	union
-	{
-		Stmtkind stmt; //Óï¾ä
-		Expkind exp;   //±í´ïÊ½
-	} kind;
-	string tokentype1; //tokenµÄÀàĞÍ
-	int loc;	 //ÔÚ¹Ø¼ü×Ö¡¢½ç·û¡¢±êÊ¶·û¡¢×Ö·û¡¢³£Á¿±íÖĞµÄÏÂ±ê/Î»ÖÃ
-		
-	
-} treenode; 
-///²Î¿¼±àÒëÔ­Àí¼°Êµ¼ùµÄÊ÷½á¹¹µÄ¶¨Òå
-///£¨Expkind£©²Ù×÷·û£¬³£Á¿£¬±êÊ¶·û£¨±äÁ¿Ãû£¬º¯ÊıÃû£¨idk£©£©
-	//±äÁ¿¡¢³£Á¿¡¢º¯Êı·µ»ØÖµµÄÀàĞÍ °üÀ¨INT,FLOAT,CHAR,DOUBLE,VOID
+    struct treenode *child[4]; //ä¹Ÿå°±forèƒ½æœ‰å››ä¸ªå„¿å­
+    struct treenode *sibling;
+    int lineno;
+    Nodekind nodekind; //èŠ‚ç‚¹ç±»å‹ï¼šè¯­å¥/è¡¨è¾¾å¼
+    union
+    {
+        Stmtkind stmt; //è¯­å¥
+        Expkind exp;   //è¡¨è¾¾å¼
+    } kind;
+    Token attr;
+} treenode;
 
-int line_num_table[1000];
-int lineno;
-int tokenno;
-string token;
+///å‚è€ƒç¼–è¯‘åŸç†åŠå®è·µçš„æ ‘ç»“æ„çš„å®šä¹‰
+///ï¼ˆExpkindï¼‰æ“ä½œç¬¦ï¼Œå¸¸é‡ï¼Œæ ‡è¯†ç¬¦ï¼ˆå˜é‡åï¼Œå‡½æ•°åï¼ˆidkï¼‰ï¼‰
+//å˜é‡ã€å¸¸é‡ã€å‡½æ•°è¿”å›å€¼çš„ç±»å‹ åŒ…æ‹¬INT,FLOAT,CHAR,DOUBLE,VOID
 
-#endif // PARSE_H_INCLUDED
+void parse();
+extern Token token_table[100];
+extern treenode *tree_table[1000]; //æ˜¾ç¤ºç»“æœçš„è¡¨

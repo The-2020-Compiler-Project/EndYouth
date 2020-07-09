@@ -1,49 +1,59 @@
-#include "parse.h"
 
-static treenode *entitypara_list();           ///ÓÃÓÚ×Ô¶¨Òåº¯ÊıµÄ²ÎÊı
-static treenode *BUER_stmt();                 ///²¼¶ûÔËËãÓï¾ä
-static treenode *newlnodestmt(Stmtkind stmt); ///ÉêÇëÓï¾ä½á¹¹½áµã
-static treenode *newlnodeexp(Expkind exp);    ///ÉêÇëËãÊ½½á¹¹½áµã
-static treenode *term();                      ///´ø³Ë³ıµÄËãÊõÊ½
-static treenode *factor();                    ///Ö÷Òª¶ÔÓÚ¼Ó¼õÒÑ¾­¸üµÍµÈ¼¶Ä£¿é
-static treenode *structure_stmt();            ///Ò»¸ö´úÂë¿é{}
-static treenode *instmt_sequence();           ///Óï¾ä½á¹¹¼¯ºÏ
-static treenode *for_stmt();                  ///forÓï¾ä
-static treenode *while_stmt();                ///whileÓï¾ä
-static treenode *if_stmt();                   ///ifÓï¾ä
-static treenode *switch_stmt();               ///switchÓï¾ä
-static treenode *case_stmt();                 ///caseÓï¾ä
-static treenode *break_stmt();                ///breakÓï¾ä
-static treenode *default_stmt();              ///defaultÓï¾ä
-static treenode *statement();                 ///»ù±¾Óï¾ä
-static treenode *definepara_stmt();           ///¶¨Òå²ÎÊı
-static treenode *quotepara_list();            ///º¯Êıµ÷ÓÃµÄ²ÎÊı
-static treenode *exp2();                      ///ËÄÔòÔËËã
-static treenode *fun_apply();                 ///º¯Êıµ÷ÓÃ
-static treenode *assign_stmt();               ///¸³ÖµÓï¾ä
-static treenode *define_assign();             ///¶¨ÒåÓï¾ä
-static treenode *exp();                       ///ËÄÔòÔËËãµÄ¸üµÍÄ£¿é
-static treenode *simple_exp();                ///¸ü¼òµ¥µÄÔËËãÄ£¿é
-static treenode *input_para_list();           ///ÊäÈëµÄ²ÎÊı
-static treenode *struct_stmt();               ///½á¹¹ÌåÓï¾ä
-int isin_first_instmt_sequence();             ///tokenÊÇ·ñÔÚÓï¾äĞòÁĞÖĞ
-void parse_printtree();                       ///Êä³ö³éÏóÓï·¨Ê÷
+#include "byylf_cf.h"
+#include "parse.h"
+#include <bits/stdc++.h>
+using namespace std;
+static treenode *entitypara_list();           //ç”¨äºè‡ªå®šä¹‰å‡½æ•°çš„å‚æ•°
+static treenode *BUER_stmt();                 //å¸ƒå°”è¿ç®—è¯­å¥
+static treenode *newlnodestmt(Stmtkind stmt); //ç”³è¯·è¯­å¥ç»“æ„ç»“ç‚¹
+static treenode *newlnodeexp(Expkind exp);    //ç”³è¯·ç®—å¼ç»“æ„ç»“ç‚¹
+static treenode *term();                      //å¸¦ä¹˜é™¤çš„ç®—æœ¯å¼
+static treenode *factor();                    //ä¸»è¦å¯¹äºåŠ å‡å·²ç»æ›´ä½ç­‰çº§æ¨¡å—
+static treenode *structure_stmt();            //ä¸€ä¸ªä»£ç å—{}
+static treenode *instmt_sequence();           //è¯­å¥ç»“æ„é›†åˆ
+static treenode *for_stmt();                  //forè¯­å¥
+static treenode *while_stmt();                //whileè¯­å¥
+static treenode *if_stmt();                   //ifè¯­å¥
+static treenode *switch_stmt();               //switchè¯­å¥
+static treenode *case_stmt();                 //caseè¯­å¥
+static treenode *break_stmt();                //breakè¯­å¥
+static treenode *print_stmt();                //printfè¯­å¥
+static treenode *default_stmt();              //defaultè¯­å¥
+static treenode *statement();                 //åŸºæœ¬è¯­å¥
+static treenode *definepara_stmt();           //å®šä¹‰å‚æ•°
+static treenode *quotepara_list();            //å‡½æ•°è°ƒç”¨çš„å‚æ•°
+static treenode *exp2();                      //å››åˆ™è¿ç®—
+static treenode *fun_apply();                 //å‡½æ•°è°ƒç”¨
+static treenode *assign_stmt();               //èµ‹å€¼è¯­å¥
+static treenode *define_assign();             //å®šä¹‰è¯­å¥
+static treenode *exp();                       //å››åˆ™è¿ç®—çš„æ›´ä½æ¨¡å—
+static treenode *simple_exp();                //æ›´ç®€å•çš„è¿ç®—æ¨¡å—
+static treenode *input_para_list();           //è¾“å…¥çš„å‚æ•°
+static treenode *struct_stmt();               //ç»“æ„ä½“è¯­å¥
+int isin_first_instmt_sequence();             //tokenæ˜¯å¦åœ¨è¯­å¥åºåˆ—ä¸­
+void parse_printtree();                       //è¾“å‡ºæŠ½è±¡è¯­æ³•æ ‘
 void printtree(treenode *lnode);
 void printnode(treenode *lnode);
-void parse();                        ///Óï·¨·ÖÎö¿ªÊ¼
-void gettoken();                     ///»ñÈ¡token
-void match(string expectedtoken); ///Æ¥Åä
-int count_row();                     ///¼ÆËãtokenËùÔÚĞĞÊı£¬Ö÷ÒªÓÃÓëÓïÒå·ÖÎö
-int isdtype();                       ///ÊÇ·ñÊÇ¶¨ÒåÀàĞÍ
-int iscomparison_op();               ///ÅĞ¶ÏÊÇ·ñÊÇ±È½ÏÔËËã·û
+void parse();                     //è¯­æ³•åˆ†æå¼€å§‹
+void gettoken();                  //è·å–token
+void match(string expectedtoken); //åŒ¹é…
+int count_row();                  //è®¡ç®—tokenæ‰€åœ¨è¡Œæ•°ï¼Œä¸»è¦ç”¨ä¸è¯­ä¹‰åˆ†æ
+int isdtype();                    //æ˜¯å¦æ˜¯å®šä¹‰ç±»å‹
+int iscomparison_op();            //åˆ¤æ–­æ˜¯å¦æ˜¯æ¯”è¾ƒè¿ç®—ç¬¦
+int array_judge(int p);
+int line_num_table[1000];
+int lineno;
+int tokenno;
+string token;
+int mainno = 0;                                               /**ç”¨äºåˆ¤æ–­mainå‡½æ•°çš„ä¸ªæ•°**/
+int ptokenno = 0;                                             /**å½“å‰è®°å·çš„è®¡æ•°å™¨ã€‚ä»ç¬¬0ä¸ªå¼€å§‹ï¼Œæ€»æ˜¯å¯¹åº”å½“å‰è®°å·çš„å‰ä¸€ä¸ª**/
+int printtree_t = 0;                                          /**è¾“å‡ºè¯­æ³•æ ‘çš„å‚æ•°**/
+treenode *tree_root;                                          /**è¯­æ³•æ ‘çš„æ ¹**/
+treenode *tree_table[1000];                                   //æ˜¾ç¤ºç»“æœçš„è¡¨
+int treenum = 0;                                              //æ ¹æ•°çš„æ•°é‡
+string dtype[4] = {"INTTK", "FLOATTK", "CHARTK", "DOUBLETK"}; /**å˜é‡æˆ–å‡½æ•°è¿”å›å€¼ï¼ˆé™¤VO"IDENFR"ä»¥å¤–ï¼‰çš„ç±»å‹**/
 
-int mainno = 0;                                  /**ÓÃÓÚÅĞ¶Ïmainº¯ÊıµÄ¸öÊı**/
-int ptokenno = 0;                                /**µ±Ç°¼ÇºÅµÄ¼ÆÊıÆ÷¡£´ÓµÚ0¸ö¿ªÊ¼£¬×ÜÊÇ¶ÔÓ¦µ±Ç°¼ÇºÅµÄÇ°Ò»¸ö**/
-int printtree_t = 0;                             /**Êä³öÓï·¨Ê÷µÄ²ÎÊı**/
-treenode *tree_root;                             /**Óï·¨Ê÷µÄ¸ù**/
-string dtype[4] = {"INT", "FLOAT", "CHAR", "DOUBLE"}; /**±äÁ¿»òº¯Êı·µ»ØÖµ£¨³ıVOIDÒÔÍâ£©µÄÀàĞÍ**/
-
-///Æ¥Åä´Ê·¨ÖĞÊ¶±ğµÄtoken,²¢È¡ÏÂÒ»¸ö¼ÇºÅ
+//åŒ¹é…è¯æ³•ä¸­è¯†åˆ«çš„token,å¹¶å–ä¸‹ä¸€ä¸ªè®°å·
 void match(string expectedtoken)
 {
 
@@ -53,17 +63,17 @@ void match(string expectedtoken)
     }
     else
     {
-        printf("error");
+        printf("dont match");
     }
 }
-/**»ñµÃ½áµã**/
+/**è·å¾—ç»“ç‚¹**/
 void gettoken()
 {
     token = token_table[ptokenno].code;
     ptokenno++;
 }
 
-///¼ÆËã¼ÇºÅÎ»ÓÚÔ´´úÂëµÄÄÄÒ»ĞĞ
+//è®¡ç®—è®°å·ä½äºæºä»£ç çš„å“ªä¸€è¡Œ
 int count_row()
 {
     int i;
@@ -76,58 +86,60 @@ int count_row()
 
 void parse()
 {
-    treenode *newtemp = NULL; //ÏÂÒ»¸öµã
-    treenode *temp = NULL;    //µ±Ç°µã
-    treenode *root = NULL;    //¸ù½áµã
-    treenode *dakuohao;       //´óÀ¨ºÅ
+    tokenno = ct_num;
+    treenode *newtemp = NULL; //ä¸‹ä¸€ä¸ªç‚¹
+    treenode *temp = NULL;    //å½“å‰ç‚¹
+    treenode *root = NULL;    //æ ¹ç»“ç‚¹
+    treenode *dakuohao;       //å¤§æ‹¬å·
     gettoken();
-    int root_tag = 0; ///ÓÃÓÚ¸ù½ÚµãµÄÅĞ¶Ï
+    int root_tag = 0; //ç”¨äºæ ¹èŠ‚ç‚¹çš„åˆ¤æ–­
 
     while (ptokenno < tokenno)
     {
-        if (isdtype() || (token == STRUCT))
+        if (isdtype() || (token == "STRUCTTK"))
         {
-            if (token == INT && token_table[ptokenno].tokenval == MAIN)
+            if (token == "INTTK" && token_table[ptokenno].code == "MAINTK") //int main
             {
+
                 root_tag++;
                 newtemp = newlnodestmt(maink);
-                match(INT);
-                match(MAIN);
-                match(L_XI);
-                if (token != R_XI)
+                match("INTTK");   //int
+                match("MAINTK");  //main
+                match("LPARENT"); //(
+                if (token != "RPARENT")
                 {
-                    newtemp->child[1] = entitypara_list(); ///²ÎÊıÁĞ±í
+                    newtemp->child[1] = entitypara_list(); //å‚æ•°åˆ—è¡¨
                 }
-                match(R_XI);
-                if (token != L_DA)
+                match("RPARENT");
+                if (token != "LBRACE")
                 {
                     printf("error", count_row());
                 }
                 else
                 {
-                    newtemp->child[2] = structure_stmt(); /**º¯ÊıÊµÌå½á¹¹**/
+                    newtemp->child[2] = structure_stmt(); /**å‡½æ•°å®ä½“ç»“æ„**/
                 }
                 mainno++;
             }
-            else if (token_table[ptokenno].tokenval == ID && token_table[ptokenno + 1].tokenval == L_XI) ///×Ô¶¨Òåº¯Êı
+            else if (token_table[ptokenno].code == "IDENFR" && token_table[ptokenno + 1].code == "LPARENT") //è‡ªå®šä¹‰å‡½æ•°
             {
                 root_tag++;
-                newtemp = newlnodestmt(funck); ///¶¯Ì¬ÉêÇëÒ»ÌõÓï¾ä½á¹¹µÄ½Úµã
+                newtemp = newlnodestmt(funck); //åŠ¨æ€ç”³è¯·ä¸€æ¡è¯­å¥ç»“æ„çš„èŠ‚ç‚¹
                 match(token);
                 treenode *j = newlnodeexp(idk);
-                match(ID);
-                newtemp->child[0] = j; ///×Ô¶¨Òåº¯ÊıÃû
-                match(L_XI);
+                match("IDENFR");
+                newtemp->child[0] = j; //è‡ªå®šä¹‰å‡½æ•°å
+                match("LPARENT");
 
-                if (token != R_XI)
+                if (token != "RPARENT")
                 {
-                    newtemp->child[1] = entitypara_list(); ///²ÎÊıÁĞ±í
+                    newtemp->child[1] = entitypara_list(); //å‚æ•°åˆ—è¡¨
                 }
 
-                match(R_XI);
-                if (token != FENH && token != L_DA)
+                match("RPARENT");
+                if (token != "SEMICN" && token != "LBRACE")
                 {
-                    printf("error missing&& function error\n");
+                    printf("error missing && function error\n");
                 }
 
                 else
@@ -135,35 +147,35 @@ void parse()
                     newtemp->child[2] = structure_stmt();
                 }
             }
-            else if (token == STRUCT && token_table[ptokenno].tokenval == ID && token_table[ptokenno + 1].tokenval == L_DA)
+            else if (token == "STRUCTTK" && token_table[ptokenno].code == "IDENFR" && token_table[ptokenno + 1].code == "LBRACE")
             {
                 root_tag++;
                 newtemp = newlnodestmt(structk);
                 match(token);
                 treenode *j = newlnodeexp(idk);
-                match(ID);
+                match("IDENFR");
                 newtemp->child[0] = j;
 
-                if (token == L_DA)
+                if (token == "LBRACE")
                 {
-                    newtemp->child[1] = structure_stmt(); ///ÕâÀïÎªÁË¼ò»¯¸³Öµ
+                    newtemp->child[1] = structure_stmt(); //è¿™é‡Œä¸ºäº†ç®€åŒ–èµ‹å€¼
                 }
             }
-            else ///±äÁ¿ÉùÃ÷--È«¾Ö  if(token==ID)
+            else //å˜é‡å£°æ˜--å…¨å±€  if(token=="IDENFR")
             {
                 root_tag++;
                 newtemp = newlnodestmt(defineparak);
 
                 match(token);
 
-                if (token != ID)
+                if (token != "IDENFR")
                 {
-                    printf("±äÁ¿¶¨ÒåÓĞÎó\n", count_row());
+                    printf("å˜é‡å®šä¹‰æœ‰è¯¯\n", count_row());
                 }
 
                 newtemp->child[0] = define_assign();
 
-                if (token != FENH)
+                if (token != "SEMICN")
                 {
                     printf("error ;", count_row);
                 }
@@ -181,31 +193,34 @@ void parse()
 
         else
         {
-            if (token == ID)
+            if (token == "IDENFR")
             {
-                printf("Î´¶¨Òå\n");
+                printf("æœªå®šä¹‰\n");
             }
             else
             {
-                printf("·Ç·¨188\n");
+                printf("error\n");
             }
         }
     }
     if (mainno != 1)
     {
-        printf("error\n", count_row());
+        printf("æ²¡æœ‰ä¸»å‡½æ•°\n", count_row());
     }
 
     tree_root = root;
-    ///´òÓ¡³éÏóÓï·¨Ê÷
+    //æ‰“å°æŠ½è±¡è¯­æ³•æ ‘
     parse_printtree();
+    cout << "è¯­æ³•æ ‘çš„æ•°é‡ï¼š" << treenum << endl;
+    //    for(int i=0;i<treenum;i++)
+    //        printnode(tree_table[i]);
 }
 
-/**ÉêÇëÒ»ÌõÓï¾ä½á¹¹µÄ½Úµã
+/**ç”³è¯·ä¸€æ¡è¯­å¥ç»“æ„çš„èŠ‚ç‚¹
 if for while return assign fun define main define**/
 treenode *newlnodestmt(Stmtkind stmt)
 {
-    /**ÎªĞÂ½áµã³õÊ¼»¯**/
+    /**ä¸ºæ–°ç»“ç‚¹åˆå§‹åŒ–**/
     treenode *t = (treenode *)malloc(sizeof(treenode));
     t->nodekind = stmtk;
     t->kind.stmt = stmt;
@@ -214,26 +229,25 @@ treenode *newlnodestmt(Stmtkind stmt)
     for (i = 0; i < 4; i++)
         t->child[i] = NULL;
     t->sibling = NULL;
-
-    if (stmt == maink) /**Èç¹ûÊÇÖ÷º¯Êı**/
+    if (stmt == maink) /**å¦‚æœæ˜¯ä¸»å‡½æ•°**/
     {
-        t->dtype = token;
+        t->attr.code = token;
     }
 
-    if (stmt == defineparak) /**Èç¹ûÊÇ¶¨Òå**/
+    if (stmt == defineparak) /**å¦‚æœæ˜¯å®šä¹‰**/
     {
-        t->dtype = token;
+        t->attr.code = token;
     }
 
     if (stmt == funck)
     {
         if (isdtype())
-            t->dtype = token;
+            t->attr.code = token;
     }
     return t;
 }
 
-///·şÎñÓÚ×Ô¶¨Òåº¯ÊıµÄ²ÎÊı  ĞÎÈç fun(int a,int b)
+//æœåŠ¡äºè‡ªå®šä¹‰å‡½æ•°çš„å‚æ•°  å½¢å¦‚ fun(int a,int b)
 treenode *entitypara_list()
 {
     treenode *t;
@@ -242,23 +256,23 @@ treenode *entitypara_list()
     treenode *newtemp;
 
     temp = newlnodestmt(defineparak);
-    t = temp; ///ÏÈ°Ñ·µ»ØµÄÊ×µØÖ·¿ØÖÆ×¡
+    t = temp; //å…ˆæŠŠè¿”å›çš„é¦–åœ°å€æ§åˆ¶ä½
     if (isdtype())
     {
         match(token);
     }
     else
     {
-        printf("error º¯Êı²ÎÊıÓĞÎó");
+        printf("error å‡½æ•°å‚æ•°æœ‰è¯¯");
     }
 
     newtemp = newlnodeexp(idk);
-    match(ID);
+    match("IDENFR");
     temp->child[0] = newtemp;
 
-    while (token == DOUH) /// ²»Ö¹Ò»¸ö²ÎÊıÊ±
+    while (token == "COMMA") // ä¸æ­¢ä¸€ä¸ªå‚æ•°æ—¶
     {
-        match(DOUH);
+        match("COMMA");
         temp1 = newlnodestmt(defineparak);
 
         if (isdtype())
@@ -271,28 +285,29 @@ treenode *entitypara_list()
         }
 
         newtemp = newlnodeexp(idk);
-        match(ID);
+        match("IDENFR");
         temp1->child[0] = newtemp;
-        temp->sibling = temp1; ///³ö¹ıbug ×¢ÒâÕâÀïÖ¸ÕëµÄ±ä»»
+        temp->sibling = temp1; //å‡ºè¿‡bug æ³¨æ„è¿™é‡ŒæŒ‡é’ˆçš„å˜æ¢
         temp = temp1;
     }
 
-    if (token != R_XI)
+    if (token != "RPARENT")
     {
-        printf("error !  À¨ºÅ²»Æ¥Åä£¡£¡");
+        printf("error !  æ‹¬å·ä¸åŒ¹é…ï¼ï¼");
     }
 
     return t;
 }
 
 /**
-*ÉêÇëÒ»ÌõËãÊ½½á¹¹expkµÄ½Úµã£¬Óï¾äÄÚÈİµÄÀàĞÍÈçÏÂ
-*opk(+ - * / »¹ÓĞÒ»Ğ©¹ØÏµ²Ù×÷·û),constk,idk
+*ç”³è¯·ä¸€æ¡ç®—å¼ç»“æ„expkçš„èŠ‚ç‚¹ï¼Œè¯­å¥å†…å®¹çš„ç±»å‹å¦‚ä¸‹
+*opk(+ - * / è¿˜æœ‰ä¸€äº›å…³ç³»æ“ä½œç¬¦),constk,idk
 **/
-///²Ù×÷·û£¬³£Á¿£¬±êÊ¶·û£¨±äÁ¿Ãû£¬º¯ÊıÃû£¨idk£©£©
+
+//æ“ä½œç¬¦ï¼Œå¸¸é‡ï¼Œæ ‡è¯†ç¬¦ï¼ˆå˜é‡åï¼Œå‡½æ•°åï¼ˆidkï¼‰ï¼‰
 treenode *newlnodeexp(Expkind exp)
 {
-    ///³õÊ¼»¯
+    //åˆå§‹åŒ–
     treenode *t = (treenode *)malloc(sizeof(treenode));
     t->nodekind = expk;
     t->kind.exp = exp;
@@ -304,35 +319,40 @@ treenode *newlnodeexp(Expkind exp)
     }
 
     t->sibling = NULL;
+    //    cout<< token_table[ptokenno-1].loc;
 
-    ///Èç¹ûÎª²Ù×÷·û
+    //å¦‚æœä¸ºæ“ä½œç¬¦
     if (exp == opk)
     {
-        t->attr.op = token;
+        t->attr.code = token;
     }
 
-    ///Èç¹ûÎª³£Á¿
+    //å¦‚æœä¸ºå¸¸é‡
     if (exp == constk)
     {
-        t->attr.val = token_table[ptokenno - 1].numval;
+        t->attr.code = token_table[ptokenno - 1].code;
+        //        cout<<token_table[ptokenno - 1].code<<endl;
+        t->attr.loc = token_table[ptokenno - 1].loc;
+        //        cout<<intcon[t->attr.loc]<<endl;
     }
 
-    ///Èç¹ûÎª±äÁ¿Ãû¡¢»òº¯ÊıÃû£¨±êÊ¶·û£©
-    if (exp == idk && token_table[ptokenno].tokenval != DIAN)
+    //å¦‚æœä¸ºå˜é‡åã€æˆ–å‡½æ•°åï¼ˆæ ‡è¯†ç¬¦ï¼‰
+    if (exp == idk && token_table[ptokenno].code != ".")
     {
-        strcpy(t->attr.name, token_table[ptokenno - 1].stringval);
+        t->attr.code = token_table[ptokenno - 1].code;
+        t->attr.loc = token_table[ptokenno - 1].loc;
     }
 
-    ///ºóÆÚ¼Ó½øÀ´µÄ ÎªstructÀàĞÍ·şÎñ
-    if (exp = idk && token_table[ptokenno].tokenval == DIAN)
+    //åæœŸåŠ è¿›æ¥çš„ ä¸ºstructç±»å‹æœåŠ¡
+    if (exp == idk && token_table[ptokenno].code == ".")
     {
-        char struct_temp1[100] = {'\0'};
-        //char struct_temp2[100]= {'\0'};
-        char struct_temp3[100] = {'\0'};
-        char struct_temp4[100] = {'\0'};
-        strcpy(struct_temp1, token_table[ptokenno - 1].stringval);
-        //strcpy(struct_temp2,token_table[ptokenno].stringval);
-        strcpy(struct_temp3, token_table[ptokenno + 1].stringval);
+        string struct_temp1 = "";
+        string struct_temp3 = "";
+        string struct_temp4 = "";
+
+        struct_temp1 = token_table[ptokenno - 1].code;
+        //strcpy(struct_temp2,token_table[ptokenno].code);
+        struct_temp3 = token_table[ptokenno + 1].code;
         int i = 0, j = 0;
         while (struct_temp1[j] != '\0')
         {
@@ -349,14 +369,14 @@ treenode *newlnodeexp(Expkind exp)
             i++;
             j++;
         }
-        strcpy(t->attr.name, struct_temp4);
+        t->attr.code = struct_temp4;
     }
     return t;
 }
 
 /***********************************************************
-* ¹¦ÄÜ:ÒÔ´óÀ¨ºÅ¿ªÊ¼µÄÒ»¸ö´ó½á¹¹
-        ±ÈÈç£º for if  while  main fun
+* åŠŸèƒ½:ä»¥å¤§æ‹¬å·å¼€å§‹çš„ä¸€ä¸ªå¤§ç»“æ„
+        æ¯”å¦‚ï¼š for if  while  main fun
 **********************************************************/
 treenode *structure_stmt()
 {
@@ -364,11 +384,11 @@ treenode *structure_stmt()
     treenode *temp = NULL;
     treenode *newtemp;
     int k = 0;
-    match(L_DA);
-    while (isin_first_instmt_sequence()) /**µ±Ç°TokenÊÇ·ñÔÚinstmt-sequenceµÄ¶¨Òå¼¯ºÏÀï**/
+    match("LBRACE");
+    while (isin_first_instmt_sequence()) /**å½“å‰Tokenæ˜¯å¦åœ¨instmt-sequenceçš„å®šä¹‰é›†åˆé‡Œ**/
     {
         k++;
-        newtemp = instmt_sequence(); ///¿ªÊ¼¸÷×ÔµÄÓï¾ä
+        newtemp = instmt_sequence(); //å¼€å§‹å„è‡ªçš„è¯­å¥
 
         if (temp != NULL)
         {
@@ -378,19 +398,19 @@ treenode *structure_stmt()
         temp = newtemp;
         if (k == 1)
         {
-            t = temp; ///°ÑÍ·½áµã¹Ì¶¨×¡ ÒÔ±ã·µ»Ø
+            t = temp; //æŠŠå¤´ç»“ç‚¹å›ºå®šä½ ä»¥ä¾¿è¿”å›
         }
     }
-    match(R_DA);
+    match("RBRACE");
     return t;
 }
-///ÎªÁËÅĞ¶ÏÊÇ²»ÊÇÕâĞ©Óï¾ä±ÈÈç for if while ¶¨Òå ·µ»Ø
+//ä¸ºäº†åˆ¤æ–­æ˜¯ä¸æ˜¯è¿™äº›è¯­å¥æ¯”å¦‚ for if while å®šä¹‰ è¿”å›
 int isin_first_instmt_sequence()
 {
-    tokentype first_instmt[20] = {FOR, WHILE, IF, INT, FLOAT,
-                                  CHAR, DOUBLE, ID, RETURN,
-                                  STRUCT, SWITCH, CASE, BREAK,
-                                  DEFAULT};
+    string first_instmt[15] = {"FORTK", "WHILETK", "IFTK", "INTTK", "FLOATTK",
+                               "CHARTK", "DOUBLETK", "IDENFR", "RETURNTK",
+                               "STRUCTTK", "SWITCHTK", "CASETK", "BREAKTK",
+                               "DEFAUTK", "PRINTFTK"};
     int i = 0;
     for (i = 0; i < 20; i++)
     {
@@ -400,72 +420,66 @@ int isin_first_instmt_sequence()
     return 0;
 }
 
-/**FOR IF WHILE ¶¨Òå PRINTF SCANFÓï¾ä RETURN µÈµÈ**/
+/**FORTK "IFTK" "WHILETK" å®šä¹‰ PRINTF SCANFè¯­å¥ "RETURNTK" ç­‰ç­‰**/
 treenode *instmt_sequence()
 {
     treenode *t = NULL;
 
-    switch (token)
-    {
-    /**forÑ­»· !!**/
-    case FOR:
+    /**forå¾ªç¯ !!**/
+    if (token == "FORTK")
     {
         t = for_stmt();
-        break;
     }
-    /**IFÓï¾ä !!**/
-    case IF:
+        /**"IFTK"è¯­å¥ !!**/
+    else if (token == "IFTK")
     {
         t = if_stmt();
-        break;
     }
-    /**whileÓï¾ä !!**/
-    case WHILE:
+        /**whileè¯­å¥ !!**/
+    else if (token == "WHILETK")
     {
         t = while_stmt();
-        break;
     }
-    /**structÓï¾ä !!**/
-    case SWITCH:
+        /**structè¯­å¥ !!**/
+    else if (token == "SWITCHTK")
     {
         t = switch_stmt();
-        break;
     }
-        /**caseÓï¾ä !!**/
-    case CASE:
+        /**caseè¯­å¥ !!**/
+    else if (token == "CASETK")
     {
         t = case_stmt();
-        break;
     }
-        /**caseÓï¾ä !!**/
-    case BREAK:
+        /**caseè¯­å¥ !!**/
+    else if (token == "BREAKTK")
     {
         t = break_stmt();
-        break;
     }
-    case DEFAULT:
+    else if (token == "PRINTFTK")
+    {
+        t = print_stmt();
+    }
+    else if (token == "DEFAULTTK")
     {
         t = default_stmt();
-        break;
     }
-    default:
+    else
     {
-        t = statement(); ///  ÆÕÍ¨Óï¾äÓĞºÜ¶à--º¯Êıµ÷ÓÃ£¬¶¨Òå£¬¸³Öµ returnµÈµÈ
-        if (token != FENH)
+        t = statement(); //  æ™®é€šè¯­å¥æœ‰å¾ˆå¤š--å‡½æ•°è°ƒç”¨ï¼Œå®šä¹‰ï¼Œèµ‹å€¼ returnç­‰ç­‰
+        if (token != "SEMICN")
         {
-            printf("missing ';' %d ", count_row()); ///Èç¹ûÎª¶¨ÒåÓï¾ä£»´òÓ¡£»ÊäÈëÓï¾ä£¬ÔòºóÃæÅĞ¶ÏÓĞÃ»ÓĞ·ÖºÅ
+            printf("missing ';' %d ", count_row()); //å¦‚æœä¸ºå®šä¹‰è¯­å¥ï¼›æ‰“å°ï¼›è¾“å…¥è¯­å¥ï¼Œåˆ™åé¢åˆ¤æ–­æœ‰æ²¡æœ‰åˆ†å·
         }
         else
         {
-            match(FENH);
+            match("SEMICN");
         }
-        break;
     }
-    }
+
     return t;
 }
 
-///forÓï¾ä
+//forè¯­å¥
 treenode *for_stmt()
 {
     treenode *t = NULL;
@@ -473,12 +487,12 @@ treenode *for_stmt()
 
     t = newlnodestmt(fork);
 
-    match(FOR);
-    match(L_XI);
+    match("FORTK");
+    match("LPARENT");
 
-    if (token != FENH)
+    if (token != "SEMICN")
     {
-        if (token == INT)
+        if (token == "INTTK")
         {
             t->child[0] = definepara_stmt();
         }
@@ -488,12 +502,12 @@ treenode *for_stmt()
         }
     }
 
-    match(FENH);
-    if (token != FENH)
+    match("SEMICN");
+    if (token != "SEMICN")
     {
-        if (token_table[ptokenno].tokenval == EQUAL)
+        if (token_table[ptokenno].code == "ASSIGN")
         {
-            printf("warning!! ²»ÄÜÎª¸³ÖµµÈÊ½");
+            printf("warning!! ä¸èƒ½ä¸ºèµ‹å€¼ç­‰å¼");
         }
         else
         {
@@ -501,18 +515,18 @@ treenode *for_stmt()
         }
     }
 
-    match(FENH);
+    match("SEMICN");
 
-    if (token != R_XI)
+    if (token != "RPARENT")
     {
         t->child[2] = exp2();
     }
 
-    match(R_XI);
+    match("RPARENT");
 
-    if (token == FENH)
+    if (token == "SEMICN")
     {
-        match(FENH);
+        match("SEMICN");
         return t;
     }
 
@@ -525,25 +539,25 @@ treenode *if_stmt()
 {
     treenode *t;
     t = newlnodestmt(ifk);
-    match(IF);
-    match(L_XI);
-    if (token_table[ptokenno].tokenval == EQUAL && token_table[ptokenno + 1].tokenval != EQUAL)
+    match("IFTK");
+    match("LPARENT");
+    if (token_table[ptokenno].code == "ASSIGN" && token_table[ptokenno + 1].code != "ASSIGN")
     {
         printf("warning");
     }
     t->child[0] = BUER_stmt();
-    match(R_XI);
+    match("RPARENT");
     t->child[1] = structure_stmt();
 
-    if (token == ELSE && token_table[ptokenno].tokenval == IF)
+    if (token == "ELSETK" && token_table[ptokenno].code == "IFTK")
     {
-        match(ELSE);
+        match("ELSETK");
         t->child[2] = if_stmt();
         ifelse_tag = 1;
     }
-    if (token == ELSE && token_table[ptokenno].tokenval != IF)
+    if (token == "ELSETK" && token_table[ptokenno].code != "IFTK")
     {
-        match(ELSE);
+        match("ELSETK");
         t->child[2] = structure_stmt();
     }
 
@@ -554,20 +568,21 @@ treenode *BUER_stmt()
     treenode *t;
     treenode *t1;
     treenode *t2;
-    if (token_table[ptokenno + 2].tokenval == ADE || token_table[ptokenno + 3].tokenval == ADE ||
-        token_table[ptokenno + 2].tokenval == HUO || token_table[ptokenno + 3].tokenval == HUO)
+    if (token_table[ptokenno + 2].code == "ANDTK" || token_table[ptokenno + 3].code == "ANDTK" ||
+        token_table[ptokenno + 2].code == "ORTK" || token_table[ptokenno + 3].code == "ORTK")
     {
     }
     else
     {
         t = exp2();
     }
+    return t;
 }
-///Ö÷ÒªÓÃÓÚFOR ,IF while ,Äã²»ÖªµÀÊÇ¸³Öµ»¹ÊÇ¹ØÏµÔËËã¡£
+//ä¸»è¦ç”¨äºFORTK ,"IFTK" while ,ä½ ä¸çŸ¥é“æ˜¯èµ‹å€¼è¿˜æ˜¯å…³ç³»è¿ç®—ã€‚
 treenode *exp2()
 {
     treenode *t;
-    if (token == ID && token_table[ptokenno].tokenval == EQUAL)
+    if (token == "IDENFR" && token_table[ptokenno].code == "ASSIGN")
     {
         t = assign_stmt();
     }
@@ -579,65 +594,85 @@ treenode *exp2()
 }
 
 /***********************************************************
- * ¹¦ÄÜ:	whileÓï¾ä
+ * åŠŸèƒ½:	whileè¯­å¥
  **********************************************************/
 treenode *while_stmt()
 {
     treenode *t = newlnodestmt(whilek);
-    match(WHILE);
-    match(L_XI);
+    match("WHILETK");
+    match("LPARENT");
     t->child[0] = exp2();
-    match(R_XI);
-    if (token == L_DA)
+    match("RPARENT");
+    if (token == "LBRACE")
         t->child[1] = structure_stmt();
-    return t; ///!!!Õâ¸öbug ÕÒÁËºÃ¾ÃÑ½£¡£¡£¡
+    return t; //!!!è¿™ä¸ªbug æ‰¾äº†å¥½ä¹…å‘€ï¼ï¼ï¼
 }
 /***********************************************************
- * ¹¦ÄÜ:	switchÓï¾ä
+ * åŠŸèƒ½:	switchè¯­å¥
  **********************************************************/
 treenode *switch_stmt()
 {
     treenode *t = newlnodestmt(switchk);
-    match(SWITCH);
-    match(L_XI);
+    match("SWITCHTK");
+    match("LPARENT");
     t->child[0] = exp2();
-    match(R_XI);
-    if (token == L_DA)
+    match("RPARENT");
+    if (token == "LBRACE")
     {
         t->child[1] = structure_stmt();
     }
     return t;
 }
-///ÓÃÓÚcaseÓï¾ä¶Î
+//ç”¨äºcaseè¯­å¥æ®µ
 treenode *case_stmt()
 {
     treenode *t = newlnodestmt(casek);
-    match(CASE);
-    treenode *j = newlnodeexp(idk);
+    match("CASETK");
+    treenode *j = newlnodeexp(constk);
+    if (token == "IDENFR")
+    {
+        treenode *j = newlnodeexp(idk);
+    }
+
     t->child[0] = j;
-    match(ID);
-    match(MAOH);
-    if (token == L_DA)
+    if (token == "IDENFR")
+        match("IDENFR");
+    else
+        match("INTCON");
+    match("COLONTK");
+    if (token == "LBRACE")
     {
         t->child[1] = structure_stmt();
     }
     return t;
 }
-///ÓÃÓÚbreakÓï¾ä
+//ç”¨äºbreakè¯­å¥
 treenode *break_stmt()
 {
     treenode *t = newlnodestmt(breakk);
-    match(BREAK);
-    match(FENH);
+    match("BREAKTK");
+    match("SEMICN");
     return t;
 }
-///ÓÃÓÚdefaultÓï¾ä
+treenode *print_stmt()
+{
+    treenode *t = newlnodestmt(printk);
+    match("PRINTFTK");
+    match("LPARENT");
+    treenode *j = newlnodeexp(constk);
+    t->child[0] = j;
+    match("STRCON");
+    match("RPARENT");
+    match("SEMICN");
+    return t;
+}
+//ç”¨äºdefaultè¯­å¥
 treenode *default_stmt()
 {
     treenode *t = newlnodestmt(defaultk);
-    match(DEFAULT);
-    match(MAOH);
-    if (token == L_DA)
+    match("DEFAUTK");
+    match("COLONTK");
+    if (token == "LBRACE")
     {
         t->child[0] = structure_stmt();
     }
@@ -646,38 +681,38 @@ treenode *default_stmt()
 treenode *statement()
 {
     treenode *t = NULL;
-    /**Èç¹ûÊÇdtype£¬ÔòÎª¶¨ÒåÓï¾ä**/
+    /**å¦‚æœæ˜¯dtypeï¼Œåˆ™ä¸ºå®šä¹‰è¯­å¥**/
     if (isdtype())
     {
         t = definepara_stmt();
     }
-    else if (token == RETURN)
+    else if (token == "RETURNTK")
     {
         t = newlnodestmt(returnk);
-        match(RETURN);
+        match("RETURNTK");
         t->child[0] = exp();
     }
-    else if (token == STRUCT)
+    else if (token == "STRUCTTK")
     {
         t = definepara_stmt();
     }
-    else if (token == ID) /**º¯Êıµ÷ÓÃ,Êı×é¶¨Òå£¬±äÁ¿µÄ¸³Öµ**/
+    else if (token == "IDENFR") /**å‡½æ•°è°ƒç”¨,æ•°ç»„å®šä¹‰ï¼Œå˜é‡çš„èµ‹å€¼**/
     {
         int tag_array = array_judge(ptokenno);
 
-        if (token_table[ptokenno].tokenval == EQUAL || tag_array == 1)
+        if (token_table[ptokenno].code == "ASSIGN" || tag_array == 1)
         {
-            t = assign_stmt(); ///Êı×é»ò±äÁ¿¸³Öµ(±äÁ¿¿ÉÄÜÎªº¯Êıµ÷ÓÃµÄ½á¹û)
+            t = assign_stmt(); //æ•°ç»„æˆ–å˜é‡èµ‹å€¼(å˜é‡å¯èƒ½ä¸ºå‡½æ•°è°ƒç”¨çš„ç»“æœ)
         }
-        else if (token_table[ptokenno].tokenval == L_XI)
+        else if (token_table[ptokenno].code == "LPARENT")
         {
-            t = fun_apply(); /// º¯Êıµ÷ÓÃ
+            t = fun_apply(); // å‡½æ•°è°ƒç”¨
         }
-        else if (token_table[ptokenno].tokenval == DIAN && token_table[ptokenno + 2].tokenval == EQUAL)
+        else if (token_table[ptokenno].code == "POINTTK" && token_table[ptokenno + 2].code == "ASSIGN")
         {
             t = assign_stmt();
         }
-        else ///if()´ıĞ´  ¸Ğ¾õ²»ÓÃÌõ¼ş
+        else //if()å¾…å†™  æ„Ÿè§‰ä¸ç”¨æ¡ä»¶
         {
             t = exp();
         }
@@ -685,32 +720,32 @@ treenode *statement()
     return t;
 }
 /***********************************************************
- * ¹¦ÄÜ:	º¯Êıµ÷ÓÃ  fun(a,b)
+ * åŠŸèƒ½:	å‡½æ•°è°ƒç”¨  fun(a,b)
  **********************************************************/
 treenode *fun_apply()
 {
     treenode *t;
     t = newlnodestmt(funck);
     treenode *temp1 = newlnodeexp(idk);
-    match(ID);
-    match(L_XI);
+    match("IDENFR");
+    match("LPARENT");
     treenode *temp2 = input_para_list();
     t->child[0] = temp1;
     t->child[1] = temp2;
-    match(R_XI);
+    match("RPARENT");
     return t;
 }
 
-///²ÎÊıÁĞ±í ·şÎñÓÚº¯Êıµ÷ÓÃÀïµÄ²ÎÊı ±ÈÈçfun(1,2)
+//å‚æ•°åˆ—è¡¨ æœåŠ¡äºå‡½æ•°è°ƒç”¨é‡Œçš„å‚æ•° æ¯”å¦‚fun(1,2)
 treenode *input_para_list()
 {
     treenode *t;
     treenode *temp;
     temp = factor();
     t = temp;
-    while (token == DOUH)
+    while (token == "COMMA")
     {
-        match(DOUH);
+        match("COMMA");
         temp->sibling = factor();
         temp = temp->sibling;
     }
@@ -718,12 +753,12 @@ treenode *input_para_list()
 }
 int array_judge(int p)
 {
-    if (token_table[p].tokenval == L_ZH)
+    if (token_table[p].code == "LBRACK")
     {
         int i;
-        for (i = p + 1; i < 1000; i++) ///ÓĞbug£¡£¡¡£¡£¡£
+        for (i = p + 1; i < 1000; i++) //æœ‰bugï¼ï¼ã€‚ã€‚ã€‚
         {
-            if (token_table[i].tokenval == R_ZH)
+            if (token_table[i].code == "RBRACK")
             {
                 return 1;
             }
@@ -733,7 +768,7 @@ int array_judge(int p)
     return -1;
 }
 
-/**ÅĞ¶Ïµ±Ç°¼ÇºÅÊÇ·ñÊÇ±äÁ¿»òº¯Êı·µ»ØÖµ£¨³ıVOIDÒÔÍâ£©**/
+/**åˆ¤æ–­å½“å‰è®°å·æ˜¯å¦æ˜¯å˜é‡æˆ–å‡½æ•°è¿”å›å€¼ï¼ˆé™¤VO"IDENFR"ä»¥å¤–ï¼‰**/
 int isdtype()
 {
     int i = 0;
@@ -745,7 +780,7 @@ int isdtype()
     return 0;
 }
 
-/**¶¨ÒåÓï¾ä**/
+/**å®šä¹‰è¯­å¥**/
 treenode *definepara_stmt()
 {
     treenode *t = NULL;
@@ -755,10 +790,10 @@ treenode *definepara_stmt()
     {
         match(token); //dtype
     }
-    else if (token == STRUCT)
+    else if (token == "STRUCTTK")
     {
         match(token);
-        match(ID); ///°ÑÕû¸östruct XX matchµô
+        match("IDENFR"); //æŠŠæ•´ä¸ªstruct XX matchæ‰
     }
 
     else
@@ -768,7 +803,7 @@ treenode *definepara_stmt()
     return t;
 }
 
-/**±äÁ¿¸³Öµ¶¨Òå  Êı×éµÄ¶¨Òå,³õÊ¼»¯£¬³õÊ¼»¯ºÍ¶¨ÒåµÄÍ¬Ê±½øĞĞ**/
+/**å˜é‡èµ‹å€¼å®šä¹‰  æ•°ç»„çš„å®šä¹‰,åˆå§‹åŒ–ï¼Œåˆå§‹åŒ–å’Œå®šä¹‰çš„åŒæ—¶è¿›è¡Œ**/
 treenode *define_assign()
 {
     treenode *t = NULL;
@@ -776,22 +811,21 @@ treenode *define_assign()
     treenode *newtemp;
     int k = 0;
 
-    if (token_table[ptokenno].tokenval == FENH)
+    if (token_table[ptokenno].code == "SEMICN")
     {
         k++;
         newtemp = newlnodeexp(idk);
-        match(ID);
-        //match(FENH);
+        match("IDENFR");
+        //        newtemp -> loc = token_table[ptokenno-2].loc;
+        //match("SEMICN");
         return t = newtemp;
     }
-    /**Ö§³Ö±äÁ¿¶¨Òå³õÊ¼»¯£¬Á¬Ğø¶¨ÒåµÈ**/
-    while (token_table[ptokenno].tokenval == EQUAL || token_table[ptokenno].tokenval == DOUH || token_table[ptokenno].tokenval == FENH || token_table[ptokenno].tokenval == L_ZH)
+    /**æ”¯æŒå˜é‡å®šä¹‰åˆå§‹åŒ–ï¼Œè¿ç»­å®šä¹‰ç­‰**/
+    while (token_table[ptokenno].code == "ASSIGN" || token_table[ptokenno].code == "COMMA" || token_table[ptokenno].code == "SEMICN" || token_table[ptokenno].code == "LBRACK")
 
     {
-        switch (token_table[ptokenno].tokenval)
-        {
 
-        case EQUAL: /**¸³ÖµÓï¾ä**/
+        if (token_table[ptokenno].code == "ASSIGN") /**èµ‹å€¼è¯­å¥**/
         {
             k++;
             newtemp = assign_stmt();
@@ -800,22 +834,21 @@ treenode *define_assign()
                 temp->sibling = newtemp;
             }
             temp = newtemp;
-            if (token == DOUH)
+            if (token == "COMMA")
             {
-                match(DOUH);
+                match("COMMA");
             }
             if (k == 1)
             {
                 t = temp;
             }
-            break;
         }
-        case DOUH:
+        else if (token_table[ptokenno].code == "COMMA")
         {
             k++;
             newtemp = newlnodeexp(idk);
-            match(ID);
-            match(DOUH);
+            match("IDENFR");
+            match("COMMA");
             if (temp != NULL)
             {
                 temp->sibling = newtemp;
@@ -825,14 +858,13 @@ treenode *define_assign()
             {
                 t = temp;
             }
-            break;
         }
 
-        case FENH:
+        else if (token_table[ptokenno].code == "SEMICN")
         {
             k++;
             newtemp = newlnodeexp(idk);
-            match(ID);
+            match("IDENFR");
             if (temp != NULL)
             {
                 temp->sibling = newtemp;
@@ -842,96 +874,93 @@ treenode *define_assign()
             {
                 t = temp;
             }
-            break;
         }
-        case L_ZH: ///Êı×é²¿·Ö£¡£¡
+        else if (token_table[ptokenno].code == "LBRACK") //æ•°ç»„éƒ¨åˆ†ï¼ï¼
         {
             k++;
 
             newtemp = newlnodestmt(define_arrayk);
             treenode *t1 = newlnodeexp(idk);
-            match(ID);
+            match("IDENFR");
             newtemp->child[0] = t1;
 
-            match(L_ZH);
-            if (token != NUM && token != R_ZH) ///Ò»Ğ©ÓïÒå·ÖÎö
+            match("LBRACK");
+            if (token != "INTCON" && token != "RBRACK") //ä¸€äº›è¯­ä¹‰åˆ†æ
             {
-                printf("error!!Êı×é¶¨ÒåÓĞÎó");
+                printf("error!!æ•°ç»„å®šä¹‰æœ‰è¯¯");
             }
-            if (token == NUM)
+            if (token == "INTCON")
             {
                 treenode *t2 = newlnodeexp(constk);
-                match(NUM);
+                match("INTCON");
                 newtemp->child[1] = t2;
             }
-            match(R_ZH);
+            match("RBRACK");
             if (temp != NULL)
             {
                 temp->sibling = newtemp;
             }
             temp = newtemp;
-            if (token == DOUH)
+            if (token == "COMMA")
             {
-                match(DOUH);
+                match("COMMA");
             }
             if (k == 1)
             {
                 t = temp;
             }
-            break;
         }
-        default:
+        else
         {
             printf("there should be assignment statement or variable", count_row());
-        }
         }
     }
     return t;
 }
 
-/**¸³ÖµÓï¾ä  Êı×éµÄ¸³ÖµºóÆÚ¼Ó½øÀ´£¡£¡£¡£¡**/
+/**èµ‹å€¼è¯­å¥  æ•°ç»„çš„èµ‹å€¼åæœŸåŠ è¿›æ¥ï¼ï¼ï¼ï¼**/
 treenode *assign_stmt()
 {
     treenode *t1;
-    if (token_table[ptokenno].tokenval == L_ZH) ///Êı×é¸³Öµ  ĞÎÈça[1] a[2]
+    if (token_table[ptokenno].code == "LBRACK") //æ•°ç»„èµ‹å€¼  å½¢å¦‚a[1] a[2]
     {
         t1 = newlnodeexp(cite_arrayk);
         treenode *t2 = newlnodeexp(idk);
-        match(ID);
+        match("IDENFR");
         t1->child[0] = t2;
-        match(L_ZH);
-        t1->child[1] = exp2(); ///Ö±½ÓÊÇfactorÀïµÄÊı×Ö½á¹¹ÁË£»
-        match(R_ZH);
+        match("LBRACK");
+        t1->child[1] = exp2(); //ç›´æ¥æ˜¯factoré‡Œçš„æ•°å­—ç»“æ„äº†ï¼›
+        match("RBRACK");
     }
-    else if (token_table[ptokenno].tokenval == DIAN) ///Îªstruct½á¹¹×¨ÃÅ¶¨Òå
+    else if (token_table[ptokenno].code == "POINTTK") //ä¸ºstructç»“æ„ä¸“é—¨å®šä¹‰
     {
         t1 = newlnodeexp(idk);
-        match(ID);
-        match(DIAN);
-        match(ID);
+        match("IDENFR");
+        match("POINTTK");
+        match("IDENFR");
     }
     else
     {
         t1 = newlnodeexp(idk);
-        match(ID);
+        match("IDENFR");
     }
-    match(EQUAL); ///²»ĞèÒª½«=Æ¥Åä³Éop
+    match("ASSIGN"); //ä¸éœ€è¦å°†=åŒ¹é…æˆop
 
-    ///opk=EQUAL
+    //opk="ASSIGN"
     treenode *t = newlnodestmt(assignk);
     t->child[0] = t1;
     t->child[1] = exp();
     return t;
 }
 
-///  simple_exp conpare simple_exp   ||simple_exp
+//  simple_exp conpare simple_exp   ||simple_exp
 treenode *exp()
 {
     treenode *t;
     treenode *temp;
 
     temp = simple_exp();
-    ///¼òµ¥±í´ïÊ½
+    //ç®€å•è¡¨è¾¾å¼
     if (iscomparison_op())
     {
         t = newlnodeexp(opk);
@@ -949,9 +978,9 @@ treenode *exp()
 
 int iscomparison_op()
 {
-    tokentype compare_op[6] = {SMALLER, SMALLEREQU,
-                               BIGGER, BIGGEREQU,
-                               NOTEQU, IFEQU}; //< <= > >= != ==
+    string compare_op[6] = {"LSS", "LEQ",
+                            "GRE", "GEQ",
+                            "NEQ", "EQL"}; //< <= > >= != ==
     int i;
     for (i = 0; i < 6; i++)
     {
@@ -960,10 +989,10 @@ int iscomparison_op()
             return 1;
         }
     }
-    return 0; ///Ã»ÓĞÆ¥ÅäÉÏ
+    return 0; //æ²¡æœ‰åŒ¹é…ä¸Š
 }
 
-///¼òµ¥±í´ïÊ½ ¼Ó¼õ
+//ç®€å•è¡¨è¾¾å¼ åŠ å‡
 treenode *simple_exp()
 {
     treenode *t = NULL;
@@ -972,12 +1001,12 @@ treenode *simple_exp()
 
     temp = term();
 
-    ///¼Ó·¨»ò¼õ·¨Óï¾ä
-    while (token == PLUS || token == MINUS)
+    //åŠ æ³•æˆ–å‡æ³•è¯­å¥
+    while (token == "PLUS" || token == "MINU")
     {
         newtemp = newlnodeexp(opk);
         match(token);
-        ///×Ó½Úµã·Ö±ğÎª×óÓÒÁ½¸öterm
+        //å­èŠ‚ç‚¹åˆ†åˆ«ä¸ºå·¦å³ä¸¤ä¸ªterm
         newtemp->child[0] = temp;
         newtemp->child[1] = term();
         temp = newtemp;
@@ -986,7 +1015,7 @@ treenode *simple_exp()
     return t;
 }
 
-///Ö÷ÒªÊÇ³Ë³ı
+//ä¸»è¦æ˜¯ä¹˜é™¤
 treenode *term()
 {
     treenode *t = NULL;
@@ -995,7 +1024,7 @@ treenode *term()
 
     temp = factor();
 
-    while (token == TIMES || token == DIVIDE)
+    while (token == "MULT" || token == "DIV")
     {
         newtemp = newlnodeexp(opk);
         match(token);
@@ -1007,60 +1036,74 @@ treenode *term()
     return t = temp;
 }
 
-///×î»ù±¾µÄµ¥Ä£¿é
+//æœ€åŸºæœ¬çš„å•æ¨¡å—
 treenode *factor()
 {
     treenode *t = NULL;
-    switch (token)
+
+    //å¸¦æ‹¬å·çš„è¡¨è¾¾å¼
+    if (token == "LPARENT")
     {
-    ///´øÀ¨ºÅµÄ±í´ïÊ½
-    case L_XI:
-    {
-        match(L_XI);
+        match("LPARENT");
         t = exp();
-        match(R_XI);
-        break;
+        match("RPARENT");
     }
 
-    ///±äÁ¿---¿ÉÄÜÎªº¯Êıµ÷ÓÃÓï¾ä£¬¿ÉÄÜÎªÊı×é£¬¿ÉÄÜÎªÆÕÍ¨±äÁ¿
-    case ID:
+    //å˜é‡---å¯èƒ½ä¸ºå‡½æ•°è°ƒç”¨è¯­å¥ï¼Œå¯èƒ½ä¸ºæ•°ç»„ï¼Œå¯èƒ½ä¸ºæ™®é€šå˜é‡
+    if (token == "IDENFR")
     {
-        if (token_table[ptokenno].tokenval == L_XI) ///º¯Êıµ÷ÓÃ
+        if (token_table[ptokenno].code == "LPARENT") //å‡½æ•°è°ƒç”¨
         {
             t = fun_apply();
         }
-        else if (token_table[ptokenno].tokenval == L_ZH) ///Êı×é
+        else if (token_table[ptokenno].code == "LBRACK") //æ•°ç»„
         {
             t = newlnodeexp(cite_arrayk);
             treenode *temp1 = newlnodeexp(idk);
-            match(ID);
-            match(L_ZH);
-            treenode *temp2 = exp2(); ///¿ÉËõĞ¡·¶Î§factor ¼´¿É;
+            match("IDENFR");
+            match("LBRACK");
+            treenode *temp2 = exp2(); //å¯ç¼©å°èŒƒå›´factor å³å¯;
             t->child[0] = temp1;
             t->child[1] = temp2;
-            match(L_ZH);
+            match("LBRACK");
         }
-        else ///ÆÕÍ¨±äÁ¿
+        else //æ™®é€šå˜é‡
         {
             t = newlnodeexp(idk);
-            match(ID);
+            match("IDENFR");
         }
-        break;
     }
 
-    ///Êı×Ö
-    case NUM:
+    //æ•°å­—
+    if (token == "INTCON")
     {
         t = newlnodeexp(constk);
-        t->attr.val = token_table[ptokenno - 1].numval;
-        match(NUM);
-        break;
+        t->attr.code = token_table[ptokenno - 1].code;
+        t->attr.loc = token_table[ptokenno - 1].loc;
+
+        match("INTCON");
     }
+    else if (token == "FLOATCON")
+    {
+        t = newlnodeexp(constk);
+        t->attr.code = token_table[ptokenno - 1].code;
+        t->attr.loc = token_table[ptokenno - 1].loc;
+
+        match("FLOATCON");
     }
+    else if (token == "CHARCON")
+    {
+        t = newlnodeexp(constk);
+        t->attr.code = token_table[ptokenno - 1].code;
+        t->attr.loc = token_table[ptokenno - 1].loc;
+
+        match("CHARCON");
+    }
+
     return t;
 }
 
-/** ** **** **** *****   *******       Êä³ö³éÏóÓï·¨Ê÷µÄ¹ı³Ì  *******   *****  ******   *****/
+/** ** **** **** *****   *******       è¾“å‡ºæŠ½è±¡è¯­æ³•æ ‘çš„è¿‡ç¨‹  *******   *****  ******   *****/
 
 void parse_printtree()
 {
@@ -1068,7 +1111,7 @@ void parse_printtree()
     printtree(t);
 }
 
-///Ê÷
+//æ ‘
 void printtree(treenode *lnode)
 {
     int i;
@@ -1077,6 +1120,7 @@ void printtree(treenode *lnode)
     for (i = 0; i < TAG; i++)
         printf("        ");
     printnode(lnode);
+    tree_table[treenum++] = lnode;
     printf("\n");
     printtree_t++;
     for (i = 0; i < 4; i++)
@@ -1095,131 +1139,147 @@ void printtree(treenode *lnode)
         printtree(lnode);
     }
 }
-///´òÓ¡½áµã
+//æ‰“å°ç»“ç‚¹
 void printnode(treenode *lnode)
 {
-    if (lnode->nodekind == expk) ///±í´ïÊ½½áµã
+    if (lnode->nodekind == expk) //è¡¨è¾¾å¼ç»“ç‚¹
     {
 
         switch (lnode->kind.exp)
         {
-        case idk:
-        {
-            printf("id=  [%s]", lnode->attr.name);
-            break;
-        }
-        case opk:
-        {
-            token = lnode->attr.op;
-            printf("op=  [%s]", tokenstring()); ///tokenstring()²»ĞèÒª²ÎÊı
-            break;
-        }
-        case constk:
-        {
-            printf("num=  [%g]", lnode->attr.val);
-            break;
-        }
-        case cite_arrayk:
-        {
-            printf("array_id'[%s]'", lnode->child[0]->attr.name);
-            break;
-        }
+            case idk:
+            {
+                //            cout<<idenfr[lnode->attr.loc] ;
+                //                cout<<lnode->attr.loc<<endl;
+                cout << "id= \"" << idenfr[lnode->attr.loc] << "\"";
+                break;
+            }
+            case opk:
+            {
+                token = lnode->attr.code;
+                cout << "op=  " << token << endl;
+                break;
+            }
+            case constk:
+            {
+                //                cout<<lnode->attr.loc<<endl;
+                if (lnode->attr.code == "INTCON")
+                    cout << "num= " << intcon[lnode->attr.loc] << endl;
+                else if (lnode->attr.code == "FLOATCON")
+                    cout << "num= " << floatcon[lnode->attr.loc] << endl;
+                else if (lnode->attr.code == "CHARCON")
+                    cout << "char = " << charcon[lnode->attr.loc] << endl;
+                else if (lnode->attr.code == "STRCON")
+                    cout << "string = " << stringcon[lnode->attr.loc] << endl;
+            }
+                //            case cite_arrayk:
+                //            {
+                //                cout<<"array_id :"<< lnode->child[0]->attr.code;
+                //                break;
+                //            }
         }
     }
-    else if (lnode->nodekind == stmtk) ///stmtk  //º¯Êı½áµã
+    else if (lnode->nodekind == stmtk) //stmtk  //å‡½æ•°ç»“ç‚¹
     {
         switch (lnode->kind.stmt)
         {
-        case ifk:
-        {
-            printf("[if]");
-            break;
-        }
-        case fork:
-        {
-            printf("[for]");
-            break;
-        }
-        case whilek:
-        {
-            printf("[while]");
-            break;
-        }
-
-        case returnk:
-        {
-            printf("[return]");
-            break;
-        }
-        case assignk:
-        {
-            printf("assign:");
-            break;
-        }
-        case funck:
-        {
-            token = lnode->dtype;
-            if (lnode->child[2] != NULL)
+            case ifk:
             {
-                printf("function : type is");
-                printf(" [%s]", tokenstring());
+                printf("[if]");
+                break;
             }
-            else
+            case fork:
             {
-                printf("callfunc :");
+                printf("[for]");
+                break;
+            }
+            case whilek:
+            {
+                printf("[while]");
+                break;
             }
 
-            break;
-        }
-        case defineparak:
-        {
-            token = lnode->dtype;
-            printf("definepara : ");
-            printf("[%s]", tokenstring());
-            break;
-        }
-        case maink:
-        {
-            printf("[main]");
-            break;
-        }
-        case define_arrayk:
-        {
-            printf("definearray");
-            break;
-        }
-        case structk:
-        {
-            printf("[struct]");
-            break;
-        }
-        case casek:
-        {
-            printf("[case]");
-            break;
-        }
-        case breakk:
-        {
-            printf("[break]");
-            break;
-        }
-        case switchk:
-        {
-            printf("[switch]");
-            break;
-        }
+            case returnk:
+            {
+                printf("[return]");
+                break;
+            }
 
-        case defaultk:
-        {
-            printf("[default]");
-            break;
-        }
-        default:
-            printf("error1!!!");
+            case assignk:
+            {
+                printf("[assign:]");
+                break;
+            }
+            case funck:
+            {
+                token = lnode->attr.code;
+                if (lnode->child[2] != NULL)
+                {
+                    printf("function : type is ");
+                    cout << token << endl;
+                }
+                else
+                {
+                    printf("[callfunc] : ");
+                }
+
+                break;
+            }
+            case defineparak:
+            {
+                token = lnode->attr.code;
+                printf("definepara : ");
+                cout << token << endl;
+                break;
+            }
+            case maink:
+            {
+                printf("[main]");
+                break;
+            }
+            case define_arrayk:
+            {
+                printf("[definearray]");
+                break;
+            }
+            case structk:
+            {
+                printf("[struct]");
+                break;
+            }
+            case casek:
+            {
+                printf("[case]");
+                break;
+            }
+            case breakk:
+            {
+                printf("[break]");
+                break;
+            }
+            case switchk:
+            {
+                printf("[switch]");
+                break;
+            }
+
+            case defaultk:
+            {
+                printf("[default]");
+                break;
+            }
+            case printk:
+            {
+                printf("[printf]");
+                break;
+            }
+
+            default:
+                printf("error1!!!");
         }
     }
     else
     {
-        printf("½ÚµãÓĞÎó£¡£¡");
+        printf("èŠ‚ç‚¹æœ‰è¯¯ï¼ï¼");
     }
 }
