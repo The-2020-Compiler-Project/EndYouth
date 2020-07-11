@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/beck/CLionProjects/untitled3/byylf_cf.h
+fstream
+-
+iostream
+-
+math.h
+-
+string
+-
+bits/stdc++.h
+-
+
+/Users/beck/CLionProjects/untitled3/parse.cpp
+byylf_cf.h
+/Users/beck/CLionProjects/untitled3/byylf_cf.h
+parse.h
+/Users/beck/CLionProjects/untitled3/parse.h
+bits/stdc++.h
+-
+
+/Users/beck/CLionProjects/untitled3/parse.h
+byylf_cf.h
+/Users/beck/CLionProjects/untitled3/byylf_cf.h
+

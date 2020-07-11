@@ -1,0 +1,26 @@
+
+ASSI(=)：⑴ SEND(:= SEM[m],_ ,SEM[m-1] );⑵ POP;POP;
+IF(if)：⑴ SEND( if  SEM[m], _ , _ );⑵ POP;
+EL(el)： ⑴ SEND( el  _ ,_ ,_  );
+IE(i)：⑴ SEND( ie  _ ,_ ,_  ); 
+WH(wh)：⑴ SEND( wh  _ , _ , _ );
+DO(el)：⑴ SEND( do SEM[m] ,_ ,_  );⑵ POP ;
+WE(we)：⑴ SEND( we  _ ,_ ,_  );
+FO(fo)：（1）SEND(for，_,_,_);
+FE(fe):(1)SEND( fe  _ ,_ ,_  );
+
+//赋值语句
+＜assignment_sentence＞ -> ＜identifier＞{push（＜identifier＞）}＝＜expresion＞{ASSI(=) }|＜identifier＞'['＜expresion＞']'{push（＜identifier＞'['＜expresion＞']'}=＜expresion＞{ASSI(=) }  
+
+
+// 条件语句
+＜conditonal_sentence＞  ->  if '('＜condition＞')'{IF(if)}＜sentence＞［else{EL(el)}＜sentence＞］{IE(ie)}                                                                                     
+// 条件//整型expresion之间才能进行关系运算 
+// expresion为整型，其值为0条件为假，值不为0时条件为真
+＜condition＞ -> ＜expresion＞＜relational＞＜expresion＞|＜expresion＞  
+
+// 循环语句
+＜loop_sentence＞ ->  while{WH(wh)} '('＜conditon＞')'{DO(do)}＜sentence＞{WE(we)}| do{WH(wh)}＜sentence＞while '('＜condition＞')' {DO(do)}{WE(we)}|for{FO(fo)}'('＜assignment_sentence＞;＜condition＞{DO(do)};＜identifier＞{push（＜identifier＞）}＝＜identifier＞(+|-)＜step_size＞{ASSI(=) }')'＜sentence＞{FE(fe)}   
+
+＜声明头部＞   ::=  int＜标识符＞ |char＜标识符＞
+＜程序＞    ::= ［＜变量定义＞］{＜有返回值函数定义＞|＜无返回值函数定义＞}＜主函数＞           

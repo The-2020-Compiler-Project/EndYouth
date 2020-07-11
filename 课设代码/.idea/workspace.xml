@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="untitled3" targetName="untitled3" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6b747136-192a-4f62-9085-db61c18052fa" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ProjectId" id="1e6qwUfNVnTG6i9DfwJHS5sHoHD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="untitled3" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled3" TARGET_NAME="untitled3" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled3" RUN_TARGET_NAME="untitled3">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6b747136-192a-4f62-9085-db61c18052fa" name="Default Changelist" comment="" />
+      <created>1593652628294</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1593652628294</updated>
+      <workItem from="1593652630016" duration="34000" />
+      <workItem from="1594001403707" duration="933000" />
+      <workItem from="1594003428011" duration="2624000" />
+      <workItem from="1594006831746" duration="961000" />
+      <workItem from="1594007909804" duration="653000" />
+      <workItem from="1594123413911" duration="119000" />
+      <workItem from="1594135341003" duration="23000" />
+      <workItem from="1594135933992" duration="1062000" />
+      <workItem from="1594168664051" duration="15003000" />
+      <workItem from="1594209068005" duration="13082000" />
+      <workItem from="1594256047493" duration="5058000" />
+      <workItem from="1594270172423" duration="5131000" />
+      <workItem from="1594289282907" duration="21598000" />
+      <workItem from="1594315300834" duration="7813000" />
+      <workItem from="1594335224615" duration="10399000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="264" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594315021164">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="264" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.900@0.0.1600.900" timestamp="1594315021164" />
+    <state x="538" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1594005765810">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="538" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1600.900@0.0.1600.900" timestamp="1594005765810" />
+    <state width="1558" height="348" key="GridCell.Tab.0.bottom" timestamp="1594385061691">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="252" key="GridCell.Tab.0.bottom/0.0.1600.900@0.0.1600.900" timestamp="1594345044875" />
+    <state width="1558" height="348" key="GridCell.Tab.0.bottom/0.23.1600.877@0.23.1600.877" timestamp="1594385061691" />
+    <state width="1558" height="348" key="GridCell.Tab.0.center" timestamp="1594385061689">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="252" key="GridCell.Tab.0.center/0.0.1600.900@0.0.1600.900" timestamp="1594345044874" />
+    <state width="1558" height="348" key="GridCell.Tab.0.center/0.23.1600.877@0.23.1600.877" timestamp="1594385061689" />
+    <state width="1558" height="348" key="GridCell.Tab.0.left" timestamp="1594385061689">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="252" key="GridCell.Tab.0.left/0.0.1600.900@0.0.1600.900" timestamp="1594345044873" />
+    <state width="1558" height="348" key="GridCell.Tab.0.left/0.23.1600.877@0.23.1600.877" timestamp="1594385061689" />
+    <state width="1558" height="348" key="GridCell.Tab.0.right" timestamp="1594385061691">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="252" key="GridCell.Tab.0.right/0.0.1600.900@0.0.1600.900" timestamp="1594345044874" />
+    <state width="1558" height="348" key="GridCell.Tab.0.right/0.23.1600.877@0.23.1600.877" timestamp="1594385061691" />
+    <state width="1558" height="348" key="GridCell.Tab.1.bottom" timestamp="1594385061693">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="348" key="GridCell.Tab.1.bottom/0.0.1600.900@0.0.1600.900" timestamp="1594340598776" />
+    <state width="1558" height="348" key="GridCell.Tab.1.bottom/0.23.1600.877@0.23.1600.877" timestamp="1594385061693" />
+    <state width="1558" height="348" key="GridCell.Tab.1.center" timestamp="1594385061692">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="348" key="GridCell.Tab.1.center/0.0.1600.900@0.0.1600.900" timestamp="1594340598775" />
+    <state width="1558" height="348" key="GridCell.Tab.1.center/0.23.1600.877@0.23.1600.877" timestamp="1594385061692" />
+    <state width="1558" height="348" key="GridCell.Tab.1.left" timestamp="1594385061692">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="348" key="GridCell.Tab.1.left/0.0.1600.900@0.0.1600.900" timestamp="1594340598774" />
+    <state width="1558" height="348" key="GridCell.Tab.1.left/0.23.1600.877@0.23.1600.877" timestamp="1594385061692" />
+    <state width="1558" height="348" key="GridCell.Tab.1.right" timestamp="1594385061693">
+      <screen x="0" y="23" width="1600" height="877" />
+    </state>
+    <state width="1558" height="348" key="GridCell.Tab.1.right/0.0.1600.900@0.0.1600.900" timestamp="1594340598775" />
+    <state width="1558" height="348" key="GridCell.Tab.1.right/0.23.1600.877@0.23.1600.877" timestamp="1594385061693" />
+    <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1593652660316">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel/0.0.1600.900@0.0.1600.900" timestamp="1593652660315" />
+    <state width="640" height="476" key="ImportCMakeProjectWizard.topPanel" timestamp="1593652660315">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="640" height="476" key="ImportCMakeProjectWizard.topPanel/0.0.1600.900@0.0.1600.900" timestamp="1593652660315" />
+    <state x="309" y="89" key="SettingsEditor" timestamp="1594005404999">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="309" y="89" key="SettingsEditor/0.0.1600.900@0.0.1600.900" timestamp="1594005404999" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/byylf_yy.cpp</url>
+          <line>698</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/byylf_yy.cpp</url>
+          <line>1637</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="token" language="ObjectiveC" />
+        <watch expression="ptokenno" language="ObjectiveC" />
+        <watch expression="token_table" language="ObjectiveC" />
+        <watch expression="tokenno" language="ObjectiveC" />
+        <watch expression="lnode" language="ObjectiveC" />
+        <watch expression="i" language="ObjectiveC" />
+        <watch expression="w" language="ObjectiveC" />
+        <watch expression="w[now_w]-&gt;attr.code" language="ObjectiveC" />
+        <watch expression="idenfr[w[now_w]-&gt;attr.loc]" language="ObjectiveC" />
+        <watch expression="h" language="ObjectiveC" />
+        <watch expression="idenfr[w[now_w]-&gt;attr.loc]" language="ObjectiveC" />
+        <watch expression="w[now_w-4]-&gt;kind.stmt" language="ObjectiveC" />
+        <watch expression="intcon[w[now_w]-&gt;attr.loc]" language="ObjectiveC" />
+        <watch expression="re" language="ObjectiveC" />
+        <watch expression="SEM.top().target_s" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
