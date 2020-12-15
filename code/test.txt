@@ -1,0 +1,35 @@
+int test(int m,int n)
+{
+return m;
+}
+int b=0;
+struct test1
+{
+int e;
+}
+int main()
+{
+char c;
+c='a';
+float d;
+d=1.1;
+int a=1;
+a=test(a,a);
+switch(a)
+{case 111:
+a=2;
+break;
+case 222:
+a=3;
+break;}
+while(a<b)
+{
+b--;
+if(b==0)
+{
+break;
+}
+}
+printf("endyouth");
+return 0;
+}
